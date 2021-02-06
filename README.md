@@ -9,13 +9,13 @@ Set-Variable -Name "rootdir" -Visibility Public -Value C:\stock-data
 Set-Variable -Name "year" -Visibility Public -Value 2020
 Do {
 Set-Variable -Name "month" -Visibility Public -Value 12
-	#$year
+
 	Do {
 		Set-Variable -Name "mon" -Visibility Public -Value $month
 		if($month -lt 10){
 			Set-Variable -Name "mon" -Visibility Public -Value 0$mon
 		} 
-		#$mon
+
 		Set-Variable -Name "directory" -Visibility Public -Value "$year-$mon" 
 		$directory
 		if ( -not (Test-Path -Path $directory) ){
@@ -36,7 +36,7 @@ Set-Variable -Name "month" -Visibility Public -Value 12
 			}	
 		}
 		$enddate
-		python .\scripts\finam-download.py --destdir $rootdir\$directory --timeframe TICKS --startdate $year-$mon-01 --enddate $enddate --market USA *>$rootdir\$directory\download-stat.log
+		python .\scripts\finam-download.py --destdir $rootdir\$directory --timeframe TICKS --startdate $year-$mon-01 --enddate $enddate --market USA 
 		$month--
 	   }
 	Until ($month -le 0)
