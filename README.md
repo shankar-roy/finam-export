@@ -1,6 +1,48 @@
 # finam-export
 [![Build Status](https://travis-ci.org/ffeast/finam-export.svg?branch=master)](https://travis-ci.org/ffeast/finam-export)
 
+Command to download data
+cd $HOME\github.com\ffeast\finam-export
+Set-Variable -Name "rootdir" -Visibility Public -Value C:\stock-data
+Set-Variable -Name "year" -Visibility Public -Value 2020
+Do {
+Set-Variable -Name "month" -Visibility Public -Value 12
+	#$year
+	Do {
+		Set-Variable -Name "mon" -Visibility Public -Value $month
+		if($month -lt 10){
+			Set-Variable -Name "mon" -Visibility Public -Value 0$mon
+		} 
+		#$mon
+		Set-Variable -Name "directory" -Visibility Public -Value "$year-$mon" 
+		$directory
+		if ( -not (Test-Path -Path $directory) ){
+			New-Item -Type Directory -Path C:\stock-data\$directory
+		}
+		
+		if($month -eq 1 -or $month -eq 3 -or $month -eq 5 -or $month -eq 7 -or $month -eq 8 -or $month -eq 10 -or $month -eq 12){
+			Set-Variable -Name "enddate" -Visibility Public -Value $year-$mon-31
+		} else {
+			if($month -eq 2) {
+				if(($year%4) -eq 0) {
+					Set-Variable -Name "enddate" -Visibility Public -Value $year-$mon-29
+				} else {
+					Set-Variable -Name "enddate" -Visibility Public -Value $year-$mon-28
+				}
+			} else { 
+				Set-Variable -Name "enddate" -Visibility Public -Value $year-$mon-30
+			}	
+		}
+		$enddate
+		python .\scripts\finam-download.py --destdir $rootdir\$directory --timeframe TICKS --startdate $year-$mon-01 --enddate $enddate --market USA *>$rootdir\$directory\download-stat.log
+		$month--
+	   }
+	Until ($month -le 0)
+	$year--
+}
+Until ($year -lt 2010)
+
+
 Python client library to download data from finam.ru
 
 ## Capabilities
