@@ -3,7 +3,7 @@
 
 Command to download data
 
-"""
+```
 cd $HOME\github.com\ffeast\finam-export
 Set-Variable -Name "rootdir" -Visibility Public -Value C:\stock-data
 Set-Variable -Name "year" -Visibility Public -Value 2020
@@ -43,7 +43,7 @@ Set-Variable -Name "month" -Visibility Public -Value 12
 	$year--
 }
 Until ($year -lt 2010)
-"""
+```
 
 Python client library to download data from finam.ru
 
